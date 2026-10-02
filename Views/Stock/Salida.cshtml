@@ -1,0 +1,50 @@
+@model DIS_Monher.Models.MovimientoStock
+
+@{
+    ViewData["Title"] = "Registrar Salida";
+}
+
+<h1>Registrar Salida de Stock</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Salida">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MaterialId" class="control-label">Material</label>
+                <select asp-for="MaterialId" class="form-control" asp-items="@(new SelectList(ViewBag.Materiales, "Id", "Nombre"))">
+                    <option value="">-- Seleccionar --</option>
+                </select>
+                <span asp-validation-for="MaterialId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Cantidad" class="control-label"></label>
+                <input asp-for="Cantidad" class="form-control" />
+                <span asp-validation-for="Cantidad" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Motivo" class="control-label"></label>
+                <input asp-for="Motivo" class="form-control" placeholder="Ej: Consumo en producción" />
+                <span asp-validation-for="Motivo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Responsable" class="control-label"></label>
+                <input asp-for="Responsable" class="form-control" />
+                <span asp-validation-for="Responsable" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-danger" />
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

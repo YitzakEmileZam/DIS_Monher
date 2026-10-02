@@ -1,0 +1,37 @@
+@model IEnumerable<DIS_Monher.Models.MovimientoStock>
+
+@{
+    ViewData["Title"] = "Historial de Movimientos";
+}
+
+<h1>Historial de Movimientos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Tipo)</th>
+            <th>@Html.DisplayNameFor(model => model.Cantidad)</th>
+            <th>@Html.DisplayNameFor(model => model.Motivo)</th>
+            <th>@Html.DisplayNameFor(model => model.Responsable)</th>
+            <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <span class="badge @(item.Tipo == "entrada" ? "bg-success" : "bg-danger")">
+                        @Html.DisplayFor(modelItem => item.Tipo)
+                    </span>
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
+                <td>@Html.DisplayFor(modelItem => item.Motivo)</td>
+                <td>@Html.DisplayFor(modelItem => item.Responsable)</td>
+                <td>@Html.DisplayFor(modelItem => item.Fecha)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Volver</a>
