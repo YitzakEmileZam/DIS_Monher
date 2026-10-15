@@ -1,0 +1,81 @@
+
+@model DIS_Monher.Models.Despacho
+
+@{
+    ViewData["Title"] = "Detalle de despacho";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Detalle de despacho</h2>
+            <p class="text-secondary mb-0">
+                Pedido: @Model.NumeroPedido
+            </p>
+        </div>
+
+        <span class="badge bg-warning text-dark fs-6">
+            @Model.Estado
+        </span>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white fw-bold py-3">
+            Dirección y fecha de entrega
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-md-3">Número de pedido</dt>
+                <dd class="col-md-9">@Model.NumeroPedido</dd>
+
+                <dt class="col-md-3">Dirección de destino</dt>
+                <dd class="col-md-9">@Model.DireccionDestino</dd>
+
+                <dt class="col-md-3">Fecha programada</dt>
+                <dd class="col-md-9">
+                    @Model.FechaProgramada.ToString("dd/MM/yyyy")
+                </dd>
+
+                <dt class="col-md-3">Rango horario</dt>
+                <dd class="col-md-9">@Model.RangoHorario</dd>
+
+                <dt class="col-md-3">Referencias adicionales</dt>
+                <dd class="col-md-9">
+                    @(string.IsNullOrWhiteSpace(Model.ReferenciasAdicionales)
+                        ? "Sin referencias adicionales"
+                        : Model.ReferenciasAdicionales)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mt-3">
+        <div class="card-header bg-white fw-bold py-3">
+            Asignación de transporte
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-md-3">Vehículo</dt>
+                <dd class="col-md-9">@Model.Vehiculo</dd>
+
+                <dt class="col-md-3">Conductor responsable</dt>
+                <dd class="col-md-9">@Model.Conductor</dd>
+
+                <dt class="col-md-3">Fecha de registro</dt>
+                <dd class="col-md-9">
+                    @Model.FechaRegistro.ToString("dd/MM/yyyy HH:mm")
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <a asp-action="Index" class="btn btn-secondary mt-3">
+        Volver a despachos
+    </a>
+
+    <a asp-action="Create" class="btn btn-warning text-white mt-3">
+        Programar otra entrega
+    </a>
+</div>

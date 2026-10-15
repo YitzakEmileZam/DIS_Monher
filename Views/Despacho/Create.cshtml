@@ -1,0 +1,408 @@
+
+@model DIS_Monher.Models.Despacho
+
+@{
+    ViewData["Title"] = "Programar entrega";
+}
+
+<style>
+    .despacho-page {
+        background: #f5f7fb;
+        color: #263449;
+        padding: 24px;
+        min-height: 75vh;
+        border-radius: 12px;
+    }
+
+    .despacho-header {
+        margin-bottom: 22px;
+    }
+
+    .despacho-header h2 {
+        font-size: 25px;
+        font-weight: 750;
+        margin-bottom: 6px;
+    }
+
+    .despacho-header p {
+        color: #778397;
+        margin: 0;
+    }
+
+    .despacho-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(260px, .95fr);
+        gap: 18px;
+        align-items: start;
+    }
+
+    .despacho-card {
+        background: white;
+        border: 1px solid #e5eaf1;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 16px;
+        box-shadow: 0 3px 12px rgba(25, 45, 70, .035);
+    }
+
+    .despacho-card h5 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .despacho-card .form-label {
+        font-size: 12px;
+        color: #69778b;
+        font-weight: 600;
+    }
+
+    .despacho-card .form-control,
+    .despacho-card .form-select {
+        border-color: #e0e6ee;
+        border-radius: 7px;
+        min-height: 42px;
+    }
+
+    .despacho-card textarea.form-control {
+        min-height: 80px;
+    }
+
+    .despacho-card .form-control:focus,
+    .despacho-card .form-select:focus {
+        border-color: #f47b20;
+        box-shadow: 0 0 0 .2rem rgba(244, 123, 32, .12);
+    }
+
+    .despacho-route {
+        background: #fff;
+        border: 1px solid #e5eaf1;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+
+    .route-map {
+        height: 155px;
+        position: relative;
+        overflow: hidden;
+        background:
+            linear-gradient(160deg, transparent 0 42%, #e6d6ad 43% 51%,
+            transparent 52%),
+            linear-gradient(20deg, #dce9d7 0 42%, #b5d8d8 43% 100%);
+    }
+
+    .route-map:before {
+        content: "";
+        position: absolute;
+        width: 150%;
+        height: 24px;
+        left: -15%;
+        top: 55%;
+        transform: rotate(-17deg);
+        background: #f8f4e9;
+        border: 2px solid #d5d0c3;
+    }
+
+    .route-map:after {
+        content: "";
+        position: absolute;
+        width: 150%;
+        height: 12px;
+        left: -20%;
+        top: 30%;
+        transform: rotate(25deg);
+        background: #f8f4e9;
+        border: 1px solid #d5d0c3;
+    }
+
+    .route-pin {
+        position: absolute;
+        z-index: 2;
+        color: #d92d45;
+        font-size: 23px;
+    }
+
+    .route-pin.p1 { left: 22%; top: 22%; }
+    .route-pin.p2 { left: 44%; top: 47%; }
+    .route-pin.p3 { left: 69%; top: 62%; }
+    .route-pin.p4 { left: 81%; top: 38%; }
+
+    .route-caption {
+        position: absolute;
+        z-index: 3;
+        bottom: 9px;
+        left: 10px;
+        background: white;
+        border-radius: 5px;
+        padding: 5px 9px;
+        font-size: 11px;
+        box-shadow: 0 2px 5px #0001;
+    }
+
+    .route-details {
+        padding: 16px;
+        font-size: 12px;
+    }
+
+    .route-details h6 {
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .route-details p {
+        color: #78859a;
+        margin: 8px 0 0;
+    }
+
+    .delivery-status {
+        background: #1f2c40;
+        color: white;
+        border-radius: 12px;
+        padding: 20px;
+    }
+
+    .delivery-status h5 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 18px;
+    }
+
+    .status-line {
+        border-left: 2px solid #526176;
+        padding: 0 0 19px 17px;
+        margin-left: 7px;
+        position: relative;
+        font-size: 12px;
+    }
+
+    .status-line:last-child {
+        border-left-color: transparent;
+        padding-bottom: 5px;
+    }
+
+    .status-line:before {
+        content: "";
+        position: absolute;
+        left: -7px;
+        top: 1px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #67768c;
+        border: 2px solid #1f2c40;
+    }
+
+    .status-line.current:before {
+        background: #ff8b24;
+    }
+
+    .status-line strong {
+        display: block;
+        margin-bottom: 3px;
+    }
+
+    .status-line span {
+        color: #aab5c6;
+    }
+
+    .btn-programar {
+        background: #f47b20;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        padding: 12px;
+        font-weight: 700;
+    }
+
+    .btn-programar:hover {
+        background: #dc6713;
+        color: white;
+    }
+
+    @@media (max-width: 850px) {
+        .despacho-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .despacho-page {
+            padding: 14px;
+        }
+    }
+</style>
+
+<div class="despacho-page">
+    <div class="despacho-header">
+        <div class="small text-secondary mb-2">
+            Despacho &gt; Programar entrega
+        </div>
+
+        <h2>Gestión de Despacho y Entrega</h2>
+        <p>Configura los detalles logísticos para el envío del pedido.</p>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Mensaje"]
+        </div>
+    }
+
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="All"
+             class="text-danger mb-3"></div>
+
+        <div class="despacho-layout">
+            <div>
+                <section class="despacho-card">
+                    <h5>📍 Dirección y Fecha de Entrega</h5>
+
+                    <div class="mb-3">
+                        <label asp-for="NumeroPedido"
+                               class="form-label"></label>
+                        <input asp-for="NumeroPedido"
+                               class="form-control"
+                               placeholder="Ej. PED-2026-0891" />
+                        <span asp-validation-for="NumeroPedido"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DireccionDestino"
+                               class="form-label"></label>
+                        <input asp-for="DireccionDestino"
+                               class="form-control"
+                               placeholder="Av. Javier Prado Este 1230, Lima" />
+                        <span asp-validation-for="DireccionDestino"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="FechaProgramada"
+                                   class="form-label"></label>
+                            <input asp-for="FechaProgramada"
+                                   type="date"
+                                   asp-format="{0:yyyy-MM-dd}"
+                                   class="form-control" />
+                            <span asp-validation-for="FechaProgramada"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="RangoHorario"
+                                   class="form-label"></label>
+                            <select asp-for="RangoHorario"
+                                    class="form-select">
+                                <option value="Mañana (08:00 - 13:00)">
+                                    Mañana (08:00 - 13:00)
+                                </option>
+                                <option value="Tarde (14:00 - 19:00)">
+                                    Tarde (14:00 - 19:00)
+                                </option>
+                            </select>
+                            <span asp-validation-for="RangoHorario"
+                                  class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-1">
+                        <label asp-for="ReferenciasAdicionales"
+                               class="form-label"></label>
+                        <textarea asp-for="ReferenciasAdicionales"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Piso, departamento, referencias para llegar..."></textarea>
+                        <span asp-validation-for="ReferenciasAdicionales"
+                              class="text-danger"></span>
+                    </div>
+                </section>
+
+                <section class="despacho-card">
+                    <h5>🚚 Asignación de Transporte</h5>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Vehiculo"
+                                   class="form-label"></label>
+                            <input asp-for="Vehiculo"
+                                   class="form-control"
+                                   placeholder="Ej. Furgoneta #03 - C3D-567" />
+                            <span asp-validation-for="Vehiculo"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Conductor"
+                                   class="form-label"></label>
+                            <input asp-for="Conductor"
+                                   class="form-control"
+                                   placeholder="Nombre del conductor" />
+                            <span asp-validation-for="Conductor"
+                                  class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <button type="submit"
+                        class="btn btn-programar w-100">
+                    Guardar Programación
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary w-100 mt-2">
+                    Cancelar
+                </a>
+            </div>
+
+            <aside>
+                <section class="despacho-route">
+                    <div class="route-map">
+                        <span class="route-pin p1">📍</span>
+                        <span class="route-pin p2">📍</span>
+                        <span class="route-pin p3">📍</span>
+                        <span class="route-pin p4">📍</span>
+                        <span class="route-caption">Vista ilustrativa de ruta</span>
+                    </div>
+
+                    <div class="route-details">
+                        <h6>Detalles de Ruta</h6>
+                        <p>🔵 <strong>Salida:</strong> Almacén Central</p>
+                        <p>🟠 <strong>Destino:</strong> Se registrará en el despacho</p>
+                        <p>La ruta es ilustrativa y no representa navegación real.</p>
+                    </div>
+                </section>
+
+                <section class="delivery-status">
+                    <h5>Estado de Entrega</h5>
+
+                    <div class="status-line">
+                        <strong>Pedido registrado</strong>
+                        <span>Información de entrega</span>
+                    </div>
+
+                    <div class="status-line current">
+                        <strong>Programando Despacho</strong>
+                        <span>Estado inicial</span>
+                    </div>
+
+                    <div class="status-line">
+                        <strong>En Tránsito</strong>
+                        <span>Pendiente de confirmación</span>
+                    </div>
+
+                    <div class="status-line">
+                        <strong>Entregado</strong>
+                        <span>Pendiente de confirmación</span>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
