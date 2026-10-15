@@ -1,0 +1,61 @@
+@model IEnumerable<DIS_Monher.Models.OrdenProduccion>
+
+@{
+    ViewData["Title"] = "Órdenes de producción";
+}
+
+<h2>Órdenes de producción</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Mensaje"]
+    </div>
+}
+
+<a asp-action="Create" class="btn btn-primary mb-3">
+    Nueva orden
+</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Número</th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Tipo de caja</th>
+            <th>Cantidad</th>
+            <th>Entrega</th>
+            <th>Responsable</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var orden in Model)
+        {
+            <tr>
+                <td>@orden.NumeroOrden</td>
+                <td>@orden.Fecha.ToString("dd/MM/yyyy")</td>
+                <td>@orden.Cliente</td>
+                <td>@orden.TipoCaja</td>
+                <td>@orden.Cantidad</td>
+                <td>@orden.FechaEntrega.ToString("dd/MM/yyyy")</td>
+                <td>@orden.Responsable</td>
+                <td>
+                    <span class="badge bg-warning text-dark">
+                        @orden.Estado
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="Details"
+                       asp-route-id="@orden.Id"
+                       class="btn btn-sm btn-info">
+                        Ver
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

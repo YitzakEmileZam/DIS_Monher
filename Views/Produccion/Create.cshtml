@@ -1,0 +1,75 @@
+@model DIS_Monher.Models.OrdenProduccion
+
+@{
+    ViewData["Title"] = "Crear orden de producción";
+}
+
+<h2>Crear orden de producción</h2>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="NumeroOrden" class="form-label"></label>
+                <input asp-for="NumeroOrden" class="form-control" />
+                <span asp-validation-for="NumeroOrden" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Fecha" class="form-label"></label>
+                <input asp-for="Fecha" type="date" asp-format="{0:yyyy-MM-dd}" class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Cliente" class="form-label"></label>
+                <input asp-for="Cliente" class="form-control" />
+                <span asp-validation-for="Cliente" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TipoCaja" class="form-label"></label>
+                <input asp-for="TipoCaja" class="form-control" />
+                <span asp-validation-for="TipoCaja" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Cantidad" class="form-label"></label>
+                <input asp-for="Cantidad" type="number" min="1" class="form-control" />
+                <span asp-validation-for="Cantidad" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FechaEntrega" class="form-label"></label>
+                <input asp-for="FechaEntrega" type="date" asp-format="{0:yyyy-MM-dd}" class="form-control" />
+                <span asp-validation-for="FechaEntrega" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Responsable" class="form-label"></label>
+                <input asp-for="Responsable" class="form-control" />
+                <span asp-validation-for="Responsable" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Crear orden
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                Cancelar
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
