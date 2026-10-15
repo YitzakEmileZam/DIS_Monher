@@ -1,0 +1,77 @@
+@model IEnumerable<DIS_Monher.Models.Notificacion>
+
+@{
+    ViewData["Title"] = "Notificaciones de Distribución";
+}
+
+<h2>Notificaciones de Distribución</h2>
+
+<hr />
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No existen notificaciones para el área de distribución.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Mensaje</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var notificacion in Model)
+            {
+                <tr>
+                    <td>
+                        @notificacion.Fecha.ToString("dd/MM/yyyy HH:mm")
+                    </td>
+
+                    <td>
+                        @notificacion.Mensaje
+                    </td>
+
+                    <td>
+                        @if (notificacion.Leida)
+                        {
+                            <span class="badge bg-secondary">
+                                Leída
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">
+                                Nueva
+                            </span>
+                        }
+                    </td>
+
+                    <td>
+                        @if (!notificacion.Leida)
+                        {
+                            <form asp-action="MarcarLeida"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@notificacion.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-primary">
+                                    Marcar como leída
+                                </button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

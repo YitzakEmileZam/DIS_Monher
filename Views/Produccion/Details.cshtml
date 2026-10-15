@@ -1,0 +1,85 @@
+@model DIS_Monher.Models.OrdenProduccion
+
+@{
+    ViewData["Title"] = "Detalle de orden";
+}
+
+<h2>Detalle de orden de producción</h2>
+
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Número de orden</dt>
+    <dd class="col-sm-9">@Model.NumeroOrden</dd>
+
+    <dt class="col-sm-3">Fecha</dt>
+    <dd class="col-sm-9">@Model.Fecha.ToString("dd/MM/yyyy")</dd>
+
+    <dt class="col-sm-3">Cliente</dt>
+    <dd class="col-sm-9">@Model.Cliente</dd>
+
+    <dt class="col-sm-3">Tipo de caja</dt>
+    <dd class="col-sm-9">@Model.TipoCaja</dd>
+
+    <dt class="col-sm-3">Cantidad</dt>
+    <dd class="col-sm-9">@Model.Cantidad</dd>
+
+    <dt class="col-sm-3">Fecha de entrega</dt>
+    <dd class="col-sm-9">@Model.FechaEntrega.ToString("dd/MM/yyyy")</dd>
+
+    <dt class="col-sm-3">Responsable</dt>
+    <dd class="col-sm-9">@Model.Responsable</dd>
+
+    <dt class="col-sm-3">Estado</dt>
+    <dd class="col-sm-9">
+        <span class="badge bg-warning text-dark">
+            @Model.Estado
+        </span>
+    </dd>
+</dl>
+
+<hr />
+
+<h4>Historial de avances</h4>
+
+@if (Model.Avances != null && Model.Avances.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Cantidad producida</th>
+                <th>Observaciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var avance in Model.Avances.OrderByDescending(a => a.Fecha))
+            {
+                <tr>
+                    <td>@avance.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@avance.Estado</td>
+                    <td>@avance.CantidadProducida</td>
+                    <td>@avance.Observaciones</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-secondary">
+        Esta orden todavía no tiene avances registrados.
+    </div>
+}
+
+<a asp-action="RegistrarAvance"
+   asp-route-id="@Model.Id"
+   class="btn btn-success">
+    Registrar avance
+</a>
+
+<a asp-action="Index" class="btn btn-secondary">
+    Volver
+</a>

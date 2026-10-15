@@ -1,0 +1,75 @@
+@model DIS_Monher.Models.AvanceProduccion
+
+@{
+    ViewData["Title"] = "Registrar avance";
+    var orden = ViewBag.Orden as DIS_Monher.Models.OrdenProduccion;
+}
+
+<h2>Registrar avance de producción</h2>
+
+@if (orden != null)
+{
+    <div class="alert alert-info">
+        <strong>Orden:</strong> @orden.NumeroOrden <br />
+        <strong>Cliente:</strong> @orden.Cliente <br />
+        <strong>Cantidad solicitada:</strong> @orden.Cantidad <br />
+        <strong>Estado actual:</strong> @orden.Estado
+    </div>
+}
+
+<form asp-action="RegistrarAvance" method="post">
+
+    <input type="hidden" asp-for="OrdenProduccionId" />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Estado" class="form-label"></label>
+
+        <select asp-for="Estado" class="form-select">
+            <option value="En Proceso">En Proceso</option>
+            <option value="Terminado">Terminado</option>
+            <option value="Cancelado">Cancelado</option>
+        </select>
+
+        <span asp-validation-for="Estado" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CantidadProducida" class="form-label"></label>
+
+        <input asp-for="CantidadProducida"
+               type="number"
+               min="0"
+               class="form-control" />
+
+        <span asp-validation-for="CantidadProducida"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Observaciones" class="form-label"></label>
+
+        <textarea asp-for="Observaciones"
+                  class="form-control"
+                  rows="3"></textarea>
+
+        <span asp-validation-for="Observaciones"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Registrar avance
+    </button>
+
+    <a asp-action="Details"
+       asp-route-id="@Model.OrdenProduccionId"
+       class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

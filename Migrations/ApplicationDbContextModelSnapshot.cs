@@ -17,6 +17,188 @@ namespace DIS_Monher.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.11");
 
+            modelBuilder.Entity("DIS_Monher.Models.AvanceProduccion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CantidadProducida")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Observaciones")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("OrdenProduccionId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrdenProduccionId");
+
+                    b.ToTable("AvancesProduccion");
+                });
+
+            modelBuilder.Entity("DIS_Monher.Models.Material", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Categoria")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FechaIngreso")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("StockActual")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StockMinimo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UnidadMedida")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UsuarioRegistro")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Codigo")
+                        .IsUnique();
+
+                    b.ToTable("Materiales");
+                });
+
+            modelBuilder.Entity("DIS_Monher.Models.MovimientoStock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Motivo")
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Responsable")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaterialId");
+
+                    b.ToTable("MovimientosStock");
+                });
+
+            modelBuilder.Entity("DIS_Monher.Models.Notificacion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Area")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Leida")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Mensaje")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("OrdenProduccionId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrdenProduccionId");
+
+                    b.ToTable("Notificaciones");
+                });
+
+            modelBuilder.Entity("DIS_Monher.Models.OrdenProduccion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Cliente")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FechaEntrega")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NumeroOrden")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Responsable")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TipoCaja")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrdenesProduccion");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -213,6 +395,39 @@ namespace DIS_Monher.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DIS_Monher.Models.AvanceProduccion", b =>
+                {
+                    b.HasOne("DIS_Monher.Models.OrdenProduccion", "OrdenProduccion")
+                        .WithMany("Avances")
+                        .HasForeignKey("OrdenProduccionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrdenProduccion");
+                });
+
+            modelBuilder.Entity("DIS_Monher.Models.MovimientoStock", b =>
+                {
+                    b.HasOne("DIS_Monher.Models.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Material");
+                });
+
+            modelBuilder.Entity("DIS_Monher.Models.Notificacion", b =>
+                {
+                    b.HasOne("DIS_Monher.Models.OrdenProduccion", "OrdenProduccion")
+                        .WithMany()
+                        .HasForeignKey("OrdenProduccionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrdenProduccion");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -262,6 +477,11 @@ namespace DIS_Monher.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DIS_Monher.Models.OrdenProduccion", b =>
+                {
+                    b.Navigation("Avances");
                 });
 #pragma warning restore 612, 618
         }
