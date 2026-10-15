@@ -46,6 +46,55 @@ namespace DIS_Monher.Migrations
                     b.ToTable("AvancesProduccion");
                 });
 
+            modelBuilder.Entity("DIS_Monher.Models.Despacho", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Conductor")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DireccionDestino")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FechaProgramada")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FechaRegistro")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NumeroPedido")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RangoHorario")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReferenciasAdicionales")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Vehiculo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Despachos");
+                });
+
             modelBuilder.Entity("DIS_Monher.Models.Material", b =>
                 {
                     b.Property<int>("Id")

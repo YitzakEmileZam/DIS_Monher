@@ -1,0 +1,93 @@
+
+@model IEnumerable<DIS_Monher.Models.Despacho>
+
+@{
+    ViewData["Title"] = "Gestión de despachos";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold">Gestión de Despacho y Entrega</h2>
+            <p class="text-secondary mb-0">
+                Consulta y administra las entregas programadas.
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-warning text-white fw-bold">
+            + Programar entrega
+        </a>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Mensaje"]
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Pedido</th>
+                                <th>Destino</th>
+                                <th>Fecha</th>
+                                <th>Horario</th>
+                                <th>Vehículo</th>
+                                <th>Conductor</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var despacho in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">
+                                    @despacho.NumeroPedido
+                                </td>
+                                <td>@despacho.DireccionDestino</td>
+                                <td>
+                                    @despacho.FechaProgramada.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>@despacho.RangoHorario</td>
+                                <td>@despacho.Vehiculo</td>
+                                <td>@despacho.Conductor</td>
+                                <td>
+                                    <span class="badge bg-warning text-dark">
+                                        @despacho.Estado
+                                    </span>
+                                </td>
+                                <td>
+                                    <a asp-action="Details"
+                                       asp-route-id="@despacho.Id"
+                                       class="btn btn-sm btn-outline-primary">
+                                        Ver detalle
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <h5>No hay despachos programados</h5>
+                    <p class="text-secondary">
+                        Registra una entrega para comenzar.
+                    </p>
+                    <a asp-action="Create" class="btn btn-warning text-white">
+                        Programar primera entrega
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

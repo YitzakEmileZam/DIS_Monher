@@ -16,6 +16,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<OrdenProduccion> OrdenesProduccion { get; set; }
     public DbSet<AvanceProduccion> AvancesProduccion { get; set; }
     public DbSet<Notificacion> Notificaciones { get; set; }
+    public DbSet<Despacho> Despachos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

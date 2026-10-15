@@ -17,73 +17,105 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = DIS_Monher
 build_property.RootNamespace = DIS_Monher
-build_property.ProjectDir = D:\Escritorio\DIS_Monher-main\
+build_property.ProjectDir = C:\Users\dcusi\DIS_Monher\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\Escritorio\DIS_Monher-main
+build_property.MSBuildProjectDirectory = C:\Users\dcusi\DIS_Monher
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/Escritorio/DIS_Monher-main/Areas/Identity/Pages/_ViewStart.cshtml]
+[C:/Users/dcusi/DIS_Monher/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Home/Index.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Despacho/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzcGFjaG9cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dcusi/DIS_Monher/Views/Despacho/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzcGFjaG9cRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dcusi/DIS_Monher/Views/Despacho/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzcGFjaG9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dcusi/DIS_Monher/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Home/Privacy.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Materiales/Create.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Materiales/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0ZXJpYWxlc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Materiales/Index.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Materiales/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0ZXJpYWxlc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Shared/Error.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Notificaciones/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2FjaW9uZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dcusi/DIS_Monher/Views/Produccion/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjY2lvblxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dcusi/DIS_Monher/Views/Produccion/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjY2lvblxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dcusi/DIS_Monher/Views/Produccion/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjY2lvblxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dcusi/DIS_Monher/Views/Produccion/RegistrarAvance.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjY2lvblxSZWdpc3RyYXJBdmFuY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/dcusi/DIS_Monher/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Shared/_LoginPartial.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Stock/Entrada.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Stock/Entrada.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2tcRW50cmFkYS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Stock/Historial.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Stock/Historial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2tcSGlzdG9yaWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Stock/Index.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Stock/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2tcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Stock/Salida.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Stock/Salida.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2tcU2FsaWRhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/_ViewImports.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/_ViewStart.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Escritorio/DIS_Monher-main/Views/Shared/_Layout.cshtml]
+[C:/Users/dcusi/DIS_Monher/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-7n8rjnb1ql
