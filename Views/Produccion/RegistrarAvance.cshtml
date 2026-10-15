@@ -5,70 +5,201 @@
     var orden = ViewBag.Orden as DIS_Monher.Models.OrdenProduccion;
 }
 
-<h2>Registrar avance de producción</h2>
+<div class="container py-3">
 
-@if (orden != null)
-{
-    <div class="alert alert-info">
-        <strong>Orden:</strong> @orden.NumeroOrden <br />
-        <strong>Cliente:</strong> @orden.Cliente <br />
-        <strong>Cantidad solicitada:</strong> @orden.Cantidad <br />
-        <strong>Estado actual:</strong> @orden.Estado
-    </div>
-}
+    <div class="mb-4">
 
-<form asp-action="RegistrarAvance" method="post">
+        <a asp-action="Details"
+           asp-route-id="@Model.OrdenProduccionId"
+           class="text-decoration-none text-muted">
+            ← Volver al detalle
+        </a>
 
-    <input type="hidden" asp-for="OrdenProduccionId" />
+        <h2 class="mt-3 mb-1">
+            Registrar avance
+        </h2>
 
-    <div asp-validation-summary="All" class="text-danger"></div>
+        <p class="text-muted mb-0">
+            Actualiza el progreso de la orden de producción.
+        </p>
 
-    <div class="mb-3">
-        <label asp-for="Estado" class="form-label"></label>
-
-        <select asp-for="Estado" class="form-select">
-            <option value="En Proceso">En Proceso</option>
-            <option value="Terminado">Terminado</option>
-            <option value="Cancelado">Cancelado</option>
-        </select>
-
-        <span asp-validation-for="Estado" class="text-danger"></span>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="CantidadProducida" class="form-label"></label>
 
-        <input asp-for="CantidadProducida"
-               type="number"
-               min="0"
-               class="form-control" />
+    @if (orden != null)
+    {
+        <div class="card border-0 shadow-sm mb-4">
 
-        <span asp-validation-for="CantidadProducida"
-              class="text-danger"></span>
+            <div class="card-body p-4">
+
+                <h5 class="mb-3">
+                    Orden @orden.NumeroOrden
+                </h5>
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <small class="text-muted d-block">
+                            Cliente
+                        </small>
+
+                        <strong>
+                            @orden.Cliente
+                        </strong>
+                    </div>
+
+                    <div class="col-md-4">
+                        <small class="text-muted d-block">
+                            Cantidad solicitada
+                        </small>
+
+                        <strong>
+                            @orden.Cantidad unidades
+                        </strong>
+                    </div>
+
+                    <div class="col-md-4">
+                        <small class="text-muted d-block">
+                            Estado actual
+                        </small>
+
+                        <strong>
+                            @orden.Estado
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4">
+
+            <h5 class="mb-4">
+                Información del avance
+            </h5>
+
+            <form asp-action="RegistrarAvance" method="post">
+
+                <input type="hidden"
+                       asp-for="OrdenProduccionId" />
+
+                <div asp-validation-summary="All"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+
+                        <label asp-for="Estado"
+                               class="form-label fw-semibold">
+                            Nuevo estado
+                        </label>
+
+                        <select asp-for="Estado"
+                                class="form-select">
+
+                            <option value="En Proceso">
+                                En Proceso
+                            </option>
+
+                            <option value="Terminado">
+                                Terminado
+                            </option>
+
+                            <option value="Cancelado">
+                                Cancelado
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Estado"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <label asp-for="CantidadProducida"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="CantidadProducida"
+                               type="number"
+                               min="0"
+                               class="form-control"
+                               placeholder="Cantidad producida" />
+
+                        <span asp-validation-for="CantidadProducida"
+                              class="text-danger">
+                        </span>
+
+                        @if (orden != null)
+                        {
+                            <small class="text-muted">
+                                Máximo: @orden.Cantidad unidades
+                            </small>
+                        }
+
+                    </div>
+
+
+                    <div class="col-12">
+
+                        <label asp-for="Observaciones"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <textarea asp-for="Observaciones"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Ingrese observaciones sobre el avance...">
+                        </textarea>
+
+                        <span asp-validation-for="Observaciones"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <hr class="my-4" />
+
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a asp-action="Details"
+                       asp-route-id="@Model.OrdenProduccionId"
+                       class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Registrar avance
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Observaciones" class="form-label"></label>
+</div>
 
-        <textarea asp-for="Observaciones"
-                  class="form-control"
-                  rows="3"></textarea>
-
-        <span asp-validation-for="Observaciones"
-              class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-success">
-        Registrar avance
-    </button>
-
-    <a asp-action="Details"
-       asp-route-id="@Model.OrdenProduccionId"
-       class="btn btn-secondary">
-        Cancelar
-    </a>
-
-</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

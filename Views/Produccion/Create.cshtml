@@ -1,73 +1,177 @@
 @model DIS_Monher.Models.OrdenProduccion
 
 @{
-    ViewData["Title"] = "Crear orden de producción";
+    ViewData["Title"] = "Nueva orden de producción";
 }
 
-<h2>Crear orden de producción</h2>
+<div class="container py-3">
 
-<hr />
+    <div class="mb-4">
+        <a asp-action="Index"
+           class="text-decoration-none text-muted">
+            ← Volver a órdenes
+        </a>
 
-<div class="row">
-    <div class="col-md-6">
+        <h2 class="mt-3 mb-1">
+            Nueva orden de producción
+        </h2>
 
-        <form asp-action="Create" method="post">
-
-            <div asp-validation-summary="All" class="text-danger"></div>
-
-            <div class="mb-3">
-                <label asp-for="NumeroOrden" class="form-label"></label>
-                <input asp-for="NumeroOrden" class="form-control" />
-                <span asp-validation-for="NumeroOrden" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Fecha" class="form-label"></label>
-                <input asp-for="Fecha" type="date" asp-format="{0:yyyy-MM-dd}" class="form-control" />
-                <span asp-validation-for="Fecha" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Cliente" class="form-label"></label>
-                <input asp-for="Cliente" class="form-control" />
-                <span asp-validation-for="Cliente" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="TipoCaja" class="form-label"></label>
-                <input asp-for="TipoCaja" class="form-control" />
-                <span asp-validation-for="TipoCaja" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Cantidad" class="form-label"></label>
-                <input asp-for="Cantidad" type="number" min="1" class="form-control" />
-                <span asp-validation-for="Cantidad" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="FechaEntrega" class="form-label"></label>
-                <input asp-for="FechaEntrega" type="date" asp-format="{0:yyyy-MM-dd}" class="form-control" />
-                <span asp-validation-for="FechaEntrega" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="Responsable" class="form-label"></label>
-                <input asp-for="Responsable" class="form-control" />
-                <span asp-validation-for="Responsable" class="text-danger"></span>
-            </div>
-
-            <button type="submit" class="btn btn-primary">
-                Crear orden
-            </button>
-
-            <a asp-action="Index" class="btn btn-secondary">
-                Cancelar
-            </a>
-
-        </form>
-
+        <p class="text-muted">
+            Complete la información para registrar una nueva orden.
+        </p>
     </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="All"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label asp-for="NumeroOrden"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="NumeroOrden"
+                               class="form-control"
+                               placeholder="Ej. OP-0001" />
+
+                        <span asp-validation-for="NumeroOrden"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Fecha"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="Fecha"
+                               type="date"
+                               asp-format="{0:yyyy-MM-dd}"
+                               class="form-control" />
+
+                        <span asp-validation-for="Fecha"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Cliente"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="Cliente"
+                               class="form-control"
+                               placeholder="Nombre del cliente" />
+
+                        <span asp-validation-for="Cliente"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="TipoCaja"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="TipoCaja"
+                               class="form-control"
+                               placeholder="Ej. Caja ranurada" />
+
+                        <span asp-validation-for="TipoCaja"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Cantidad"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="Cantidad"
+                               type="number"
+                               min="1"
+                               class="form-control"
+                               placeholder="Cantidad a producir" />
+
+                        <span asp-validation-for="Cantidad"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="FechaEntrega"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="FechaEntrega"
+                               type="date"
+                               asp-format="{0:yyyy-MM-dd}"
+                               class="form-control" />
+
+                        <span asp-validation-for="FechaEntrega"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Responsable"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="Responsable"
+                               class="form-control"
+                               placeholder="Responsable de la orden" />
+
+                        <span asp-validation-for="Responsable"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">
+                            Estado inicial
+                        </label>
+
+                        <input type="text"
+                               value="Pendiente"
+                               class="form-control"
+                               disabled />
+
+                        <small class="text-muted">
+                            Las nuevas órdenes se registran como pendientes.
+                        </small>
+                    </div>
+
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Crear orden
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
 </div>
 
 @section Scripts {

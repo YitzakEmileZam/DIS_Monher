@@ -1,77 +1,111 @@
 @model IEnumerable<DIS_Monher.Models.Notificacion>
 
 @{
-    ViewData["Title"] = "Notificaciones de Distribución";
+    ViewData["Title"] = "Notificaciones";
 }
 
-<h2>Notificaciones de Distribución</h2>
+<div class="container py-3">
 
-<hr />
+    <div class="mb-4">
+        <h2 class="mb-1">
+            Notificaciones
+        </h2>
 
-@if (!Model.Any())
-{
-    <div class="alert alert-info">
-        No existen notificaciones para el área de distribución.
+        <p class="text-muted mb-0">
+            Avisos generados para el área de distribución.
+        </p>
     </div>
-}
-else
-{
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Mensaje</th>
-                <th>Estado</th>
-                <th></th>
-            </tr>
-        </thead>
 
-        <tbody>
+    @if (!Model.Any())
+    {
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center py-5">
+
+                <h5 class="text-muted">
+                    No hay notificaciones
+                </h5>
+
+                <p class="text-muted mb-0">
+                    Las órdenes terminadas aparecerán aquí.
+                </p>
+
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+
             @foreach (var notificacion in Model)
             {
-                <tr>
-                    <td>
-                        @notificacion.Fecha.ToString("dd/MM/yyyy HH:mm")
-                    </td>
+                <div class="col-12">
 
-                    <td>
-                        @notificacion.Mensaje
-                    </td>
+                    <div class="card border-0 shadow-sm">
 
-                    <td>
-                        @if (notificacion.Leida)
-                        {
-                            <span class="badge bg-secondary">
-                                Leída
-                            </span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-success">
-                                Nueva
-                            </span>
-                        }
-                    </td>
+                        <div class="card-body p-4">
 
-                    <td>
-                        @if (!notificacion.Leida)
-                        {
-                            <form asp-action="MarcarLeida"
-                                  method="post">
+                            <div class="d-flex justify-content-between align-items-start">
 
-                                <input type="hidden"
-                                       name="id"
-                                       value="@notificacion.Id" />
+                                <div class="me-4">
 
-                                <button type="submit"
-                                        class="btn btn-sm btn-primary">
-                                    Marcar como leída
-                                </button>
-                            </form>
-                        }
-                    </td>
-                </tr>
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+
+                                        @if (notificacion.Leida)
+                                        {
+                                            <span class="badge bg-secondary">
+                                                Leída
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">
+                                                Nueva
+                                            </span>
+                                        }
+
+                                        <small class="text-muted">
+                                            @notificacion.Fecha.ToString("dd/MM/yyyy HH:mm")
+                                        </small>
+
+                                    </div>
+
+                                    <p class="mb-1 fw-semibold">
+                                        @notificacion.Mensaje
+                                    </p>
+
+                                    <small class="text-muted">
+                                        Área: @notificacion.Area
+                                    </small>
+
+                                </div>
+
+                                @if (!notificacion.Leida)
+                                {
+                                    <form asp-action="MarcarLeida"
+                                          method="post">
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@notificacion.Id" />
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-primary">
+                                            Marcar como leída
+                                        </button>
+
+                                    </form>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
             }
-        </tbody>
-    </table>
-}
+
+        </div>
+    }
+
+</div>

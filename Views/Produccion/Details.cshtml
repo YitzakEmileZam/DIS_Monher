@@ -2,84 +2,225 @@
 
 @{
     ViewData["Title"] = "Detalle de orden";
+
+    var claseEstado = Model.Estado switch
+    {
+        "Pendiente" => "bg-warning text-dark",
+        "En Proceso" => "bg-primary",
+        "Terminado" => "bg-success",
+        "Cancelado" => "bg-danger",
+        _ => "bg-secondary"
+    };
 }
 
-<h2>Detalle de orden de producción</h2>
+<div class="container py-3">
 
-<hr />
+    <div class="d-flex justify-content-between align-items-start mb-4">
 
-<dl class="row">
-    <dt class="col-sm-3">Número de orden</dt>
-    <dd class="col-sm-9">@Model.NumeroOrden</dd>
+        <div>
+            <a asp-action="Index"
+               class="text-decoration-none text-muted">
+                ← Volver a órdenes
+            </a>
 
-    <dt class="col-sm-3">Fecha</dt>
-    <dd class="col-sm-9">@Model.Fecha.ToString("dd/MM/yyyy")</dd>
+            <h2 class="mt-3 mb-1">
+                Orden @Model.NumeroOrden
+            </h2>
 
-    <dt class="col-sm-3">Cliente</dt>
-    <dd class="col-sm-9">@Model.Cliente</dd>
+            <p class="text-muted mb-0">
+                Información y seguimiento de la orden de producción.
+            </p>
+        </div>
 
-    <dt class="col-sm-3">Tipo de caja</dt>
-    <dd class="col-sm-9">@Model.TipoCaja</dd>
-
-    <dt class="col-sm-3">Cantidad</dt>
-    <dd class="col-sm-9">@Model.Cantidad</dd>
-
-    <dt class="col-sm-3">Fecha de entrega</dt>
-    <dd class="col-sm-9">@Model.FechaEntrega.ToString("dd/MM/yyyy")</dd>
-
-    <dt class="col-sm-3">Responsable</dt>
-    <dd class="col-sm-9">@Model.Responsable</dd>
-
-    <dt class="col-sm-3">Estado</dt>
-    <dd class="col-sm-9">
-        <span class="badge bg-warning text-dark">
+        <span class="badge @claseEstado fs-6 mt-4">
             @Model.Estado
         </span>
-    </dd>
-</dl>
 
-<hr />
-
-<h4>Historial de avances</h4>
-
-@if (Model.Avances != null && Model.Avances.Any())
-{
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th>Cantidad producida</th>
-                <th>Observaciones</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach (var avance in Model.Avances.OrderByDescending(a => a.Fecha))
-            {
-                <tr>
-                    <td>@avance.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
-                    <td>@avance.Estado</td>
-                    <td>@avance.CantidadProducida</td>
-                    <td>@avance.Observaciones</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <div class="alert alert-secondary">
-        Esta orden todavía no tiene avances registrados.
     </div>
-}
 
-<a asp-action="RegistrarAvance"
-   asp-route-id="@Model.Id"
-   class="btn btn-success">
-    Registrar avance
-</a>
 
-<a asp-action="Index" class="btn btn-secondary">
-    Volver
-</a>
+    <!-- INFORMACIÓN DE LA ORDEN -->
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <h5 class="mb-4">
+                Información de la orden
+            </h5>
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+                    <small class="text-muted d-block">
+                        Cliente
+                    </small>
+
+                    <strong>
+                        @Model.Cliente
+                    </strong>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted d-block">
+                        Tipo de caja
+                    </small>
+
+                    <strong>
+                        @Model.TipoCaja
+                    </strong>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted d-block">
+                        Cantidad solicitada
+                    </small>
+
+                    <strong>
+                        @Model.Cantidad unidades
+                    </strong>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted d-block">
+                        Fecha de creación
+                    </small>
+
+                    <strong>
+                        @Model.Fecha.ToString("dd/MM/yyyy")
+                    </strong>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted d-block">
+                        Fecha de entrega
+                    </small>
+
+                    <strong>
+                        @Model.FechaEntrega.ToString("dd/MM/yyyy")
+                    </strong>
+                </div>
+
+                <div class="col-md-4">
+                    <small class="text-muted d-block">
+                        Responsable
+                    </small>
+
+                    <strong>
+                        @Model.Responsable
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- HISTORIAL -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <div>
+                    <h5 class="mb-1">
+                        Historial de avances
+                    </h5>
+
+                    <small class="text-muted">
+                        Seguimiento del progreso de producción.
+                    </small>
+                </div>
+
+                @if (Model.Estado != "Terminado" &&
+                     Model.Estado != "Cancelado")
+                {
+                    <a asp-action="RegistrarAvance"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-primary">
+                        + Registrar avance
+                    </a>
+                }
+
+            </div>
+
+
+            @if (Model.Avances != null && Model.Avances.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Cantidad producida</th>
+                                <th>Observaciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var avance in Model.Avances
+                                .OrderByDescending(a => a.Fecha))
+                            {
+                                var claseAvance = avance.Estado switch
+                                {
+                                    "En Proceso" => "bg-primary",
+                                    "Terminado" => "bg-success",
+                                    "Cancelado" => "bg-danger",
+                                    _ => "bg-secondary"
+                                };
+
+                                <tr>
+
+                                    <td>
+                                        @avance.Fecha.ToString("dd/MM/yyyy HH:mm")
+                                    </td>
+
+                                    <td>
+                                        <span class="badge @claseAvance">
+                                            @avance.Estado
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        @avance.CantidadProducida
+                                    </td>
+
+                                    <td>
+                                        @(string.IsNullOrWhiteSpace(avance.Observaciones)
+                                            ? "-"
+                                            : avance.Observaciones)
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-4 text-muted">
+
+                    <p class="mb-1">
+                        No hay avances registrados.
+                    </p>
+
+                    <small>
+                        Registra el primer avance de esta orden.
+                    </small>
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

@@ -18,6 +18,7 @@ namespace DIS_Monher.Controllers
         public async Task<IActionResult> Index()
         {
             var ordenes = await _context.OrdenesProduccion
+                .Include(o => o.Avances)
                 .OrderByDescending(o => o.Fecha)
                 .ToListAsync();
 
