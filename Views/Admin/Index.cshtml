@@ -1,0 +1,58 @@
+@using DIS_Monher.Models
+@{
+    ViewData["Title"] = "Panel de administración";
+    var criticos = (List<Material>)ViewBag.Criticos;
+}
+
+<div class="cabecera">
+    <div>
+        <h1 class="titulo">Panel de administración</h1>
+        <p class="subtitulo">Control de materiales e inventario</p>
+    </div>
+    <a class="btn-monher" asp-controller="Materiales" asp-action="Create">Registrar material</a>
+</div>
+
+<div class="kpis">
+    <div class="panel kpi">
+        <div class="valor">@ViewBag.TotalMateriales</div>
+        <div class="etiqueta">Materiales registrados</div>
+    </div>
+    <div class="panel kpi alerta">
+        <div class="valor">@ViewBag.BajoMinimo</div>
+        <div class="etiqueta">Materiales en o bajo el stock mínimo</div>
+    </div>
+    <div class="panel kpi">
+        <div class="valor">@ViewBag.TotalProductos</div>
+        <div class="etiqueta">Productos en catálogo</div>
+    </div>
+    <div class="panel kpi alerta">
+        <div class="valor">@ViewBag.ProductosBajos</div>
+        <div class="etiqueta">Productos con stock bajo o agotado</div>
+    </div>
+</div>
+
+<div class="panel">
+    <h2 style="font-size:1rem;font-weight:600;margin-bottom:12px">Materiales que necesitan reposición</h2>
+    @if (criticos.Count == 0)
+    {
+        <div class="vacio">Todos los materiales están sobre su stock mínimo.</div>
+    }
+    else
+    {
+        <table class="tabla">
+            <thead><tr><th>Código</th><th>Material</th><th>Stock</th><th>Mínimo</th><th>Faltan</th></tr></thead>
+            <tbody>
+            @foreach (var m in criticos)
+            {
+                <tr>
+                    <td>@m.Codigo</td>
+                    <td>@m.Nombre</td>
+                    <td class="estado-bajo">@m.StockActual @m.UnidadMedida</td>
+                    <td>@m.StockMinimo</td>
+                    <td>@(m.StockMinimo - m.StockActual) @m.UnidadMedida</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>

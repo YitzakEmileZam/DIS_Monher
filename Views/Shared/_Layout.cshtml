@@ -1,51 +1,58 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DIS_Monher</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - MONHER</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/DIS_Monher.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/monher.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DIS_Monher</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
+@{
+    var ctrl = ViewContext.RouteData.Values["controller"]?.ToString();
+    string Active(string c) => ctrl == c ? "active" : "";
+    var esAdmin = User.IsInRole("Admin");
+}
+<div class="app">
+    <aside class="sidebar">
+        <a class="brand" asp-controller="Home" asp-action="Index">MONHER</a>
+        <nav>
+            @if (esAdmin)
+            {
+                <a class="@Active("Admin")" asp-controller="Admin" asp-action="Index">Panel</a>
+                <a class="@Active("Materiales")" asp-controller="Materiales" asp-action="Index">Materiales</a>
+                <span class="soon">Control de inventario</span>
+                <span class="soon">Órdenes de producción</span>
+                <span class="soon">Productos terminados</span>
+                <span class="soon">Reportes</span>
+            }
+            else
+            {
+                <a class="@Active("Catalogo")" asp-controller="Catalogo" asp-action="Index">Catálogo</a>
+                <span class="soon">Mis pedidos</span>
+            }
         </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    </aside>
+
+    <div class="main">
+        <header class="topbar">
+            @if (esAdmin) { <span class="rol-chip">Administrador</span> }
+            <partial name="_LoginPartial" />
+        </header>
+        <main class="content">
+            @if (TempData["Ok"] != null)
+            {
+                <div class="alert alert-success">@TempData["Ok"]</div>
+            }
             @RenderBody()
         </main>
     </div>
+</div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - DIS_Monher - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

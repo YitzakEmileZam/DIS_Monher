@@ -1,31 +1,24 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using DIS_Monher.Models;
+using Microsoft.AspNetCore.Mvc;
 
-namespace DIS_Monher.Controllers;
-
-public class HomeController : Controller
+namespace DIS_Monher.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
+        // Cada rol aterriza en su propia vista
+        public IActionResult Index()
+        {
+            if (User.IsInRole("Admin"))
+                return RedirectToAction("Index", "Admin");
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+            return RedirectToAction("Index", "Catalogo");
+        }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }

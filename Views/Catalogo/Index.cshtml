@@ -1,0 +1,55 @@
+@model IEnumerable<DIS_Monher.Models.Producto>
+@{
+    ViewData["Title"] = "Catálogo";
+    var categorias = (List<string>)ViewBag.Categorias;
+    var catActual = ViewBag.Categoria as string;
+}
+
+<div class="cabecera">
+    <div>
+        <h1 class="titulo">Catálogo</h1>
+        <p class="subtitulo">Muebles y artículos del hogar fabricados por MONHER</p>
+    </div>
+</div>
+
+<form method="get" class="filtros">
+    <input name="q" value="@ViewBag.Q" class="form-control" placeholder="Buscar un producto" />
+    <select name="categoria" class="form-select" onchange="this.form.submit()">
+        <option value="">Todas las categorías</option>
+        @foreach (var c in categorias)
+        {
+            <option value="@c" selected="@(c == catActual)">@c</option>
+        }
+    </select>
+    <button class="btn-monher" type="submit">Buscar</button>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="panel vacio">No encontramos productos con ese filtro. Prueba con otra búsqueda o categoría.</div>
+}
+else
+{
+    <div class="grid-productos">
+    @foreach (var p in Model)
+    {
+        var tono = Math.Max(0, categorias.IndexOf(p.Categoria)) % 4;
+        var estado = p.Stock <= 0 ? "agotado" : p.Stock <= 5 ? "bajo" : "ok";
+        <article class="producto">
+            <div class="producto-img tono-@tono">
+                <span>@p.Categoria</span>
+                <em class="est est-@estado">@p.EstadoStock</em>
+            </div>
+            <div class="producto-cuerpo">
+                <h2>@p.Nombre</h2>
+                <p class="acabado">@p.Acabado</p>
+                <p class="desc">@p.Descripcion</p>
+                <div class="producto-pie">
+                    <strong>S/ @p.Precio.ToString("N2")</strong>
+                    <small>@(p.Stock > 0 ? $"{p.Stock} disponibles" : "Sin stock")</small>
+                </div>
+            </div>
+        </article>
+    }
+    </div>
+}

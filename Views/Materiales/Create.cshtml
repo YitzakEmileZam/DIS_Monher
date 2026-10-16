@@ -1,0 +1,21 @@
+@model DIS_Monher.Models.Material
+@{ ViewData["Title"] = "Registrar material"; }
+
+<div class="cabecera">
+    <div>
+        <h1 class="titulo">Registrar material</h1>
+        <p class="subtitulo">El código debe ser único</p>
+    </div>
+</div>
+
+<div class="panel form-panel">
+    <form asp-action="Create" method="post">
+        <partial name="_Form" model="Model" />
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn-naranja">Guardar material</button>
+            <a asp-action="Index" class="btn btn-light">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

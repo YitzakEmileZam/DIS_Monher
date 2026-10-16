@@ -1,8 +1,49 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@using DIS_Monher.Models
+@{
+    ViewData["Title"] = "Resumen";
+    var recientes = (List<Material>)ViewBag.Recientes;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="cabecera">
+    <div>
+        <h1 class="titulo">Resumen</h1>
+        <p class="subtitulo">Sistema integral de gestión de producción e inventario</p>
+    </div>
+    <a class="btn-monher" asp-controller="Materiales" asp-action="Create">Registrar material</a>
+</div>
+
+<div class="kpis">
+    <div class="panel kpi">
+        <div class="valor">@ViewBag.TotalMateriales</div>
+        <div class="etiqueta">Materiales registrados</div>
+    </div>
+    <div class="panel kpi alerta">
+        <div class="valor">@ViewBag.BajoMinimo</div>
+        <div class="etiqueta">Materiales en o bajo el stock mínimo</div>
+    </div>
+</div>
+
+<div class="panel">
+    <h2 style="font-size:1rem;font-weight:600;margin-bottom:12px">Últimos materiales registrados</h2>
+    @if (recientes.Count == 0)
+    {
+        <div class="vacio">Aún no hay materiales. <a asp-controller="Materiales" asp-action="Create">Registra el primero</a>.</div>
+    }
+    else
+    {
+        <table class="tabla">
+            <thead><tr><th>Código</th><th>Nombre</th><th>Stock</th><th>Ingreso</th></tr></thead>
+            <tbody>
+            @foreach (var m in recientes)
+            {
+                <tr>
+                    <td>@m.Codigo</td>
+                    <td>@m.Nombre</td>
+                    <td class="@(m.BajoMinimo ? "estado-bajo" : "estado-ok")">@m.StockActual @m.UnidadMedida</td>
+                    <td>@m.FechaIngreso.ToString("dd/MM/yyyy")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
 </div>

@@ -287,3 +287,4 @@ C:\Users\ADMIN\Desktop\Nueva carpeta (10)\DIS_Monher\bin\Debug\net9.0\runtimes\w
 C:\Users\ADMIN\Desktop\Nueva carpeta (10)\DIS_Monher\bin\Debug\net9.0\runtimes\win-arm64\native\e_sqlite3.dll
 C:\Users\ADMIN\Desktop\Nueva carpeta (10)\DIS_Monher\bin\Debug\net9.0\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\ADMIN\Desktop\Nueva carpeta (10)\DIS_Monher\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\ADMIN\Desktop\Nueva carpeta (10)\DIS_Monher\obj\Debug\net9.0\compressed\r9q7h3lckg-ejgr6o52in.gz

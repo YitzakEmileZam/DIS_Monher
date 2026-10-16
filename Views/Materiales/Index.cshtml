@@ -1,0 +1,55 @@
+@model IEnumerable<DIS_Monher.Models.Material>
+@{
+    ViewData["Title"] = "Materiales";
+}
+
+<div class="cabecera">
+    <div>
+        <h1 class="titulo">Materiales</h1>
+        <p class="subtitulo">Registra y consulta materiales e insumos del almacén</p>
+    </div>
+    <a class="btn-monher" asp-action="Create">Registrar material</a>
+</div>
+
+<form method="get" class="d-flex gap-2 mb-3" style="max-width:480px">
+    <input name="q" value="@ViewBag.Q" class="form-control" placeholder="Buscar por código, nombre o categoría" />
+    <button class="btn-monher" type="submit">Buscar</button>
+</form>
+
+<div class="panel">
+@if (!Model.Any())
+{
+    <div class="vacio">No hay materiales para mostrar.</div>
+}
+else
+{
+    <div class="table-responsive">
+    <table class="tabla">
+        <thead>
+            <tr><th>Código</th><th>Material</th><th>Categoría</th><th>Stock</th><th>Mínimo</th><th>Ingreso</th><th>Responsable</th><th></th></tr>
+        </thead>
+        <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m.Codigo</td>
+                <td><strong>@m.Nombre</strong><br /><small class="text-muted">@m.Descripcion</small></td>
+                <td><span class="chip">@m.Categoria</span></td>
+                <td class="@(m.BajoMinimo ? "estado-bajo" : "estado-ok")">@m.StockActual @m.UnidadMedida</td>
+                <td>@m.StockMinimo</td>
+                <td>@m.FechaIngreso.ToString("dd/MM/yyyy")</td>
+                <td>@m.UsuarioResponsable</td>
+                <td class="text-end text-nowrap">
+                    <a asp-action="Edit" asp-route-id="@m.Id">Editar</a>
+                    <form asp-action="Delete" asp-route-id="@m.Id" method="post" class="d-inline"
+                          onsubmit="return confirm('¿Eliminar el material @m.Codigo?');">
+                        <button class="btn btn-link text-danger p-0 ms-2" type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+}
+</div>

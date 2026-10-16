@@ -1,0 +1,45 @@
+@model DIS_Monher.Models.Material
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <label asp-for="Codigo" class="form-label"></label>
+        <input asp-for="Codigo" class="form-control" />
+        <span asp-validation-for="Codigo" class="text-danger"></span>
+    </div>
+    <div class="col-md-8">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <label asp-for="Descripcion" class="form-label"></label>
+        <textarea asp-for="Descripcion" class="form-control" rows="2"></textarea>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Categoria" class="form-label"></label>
+        <input asp-for="Categoria" class="form-control" list="categorias" />
+        <datalist id="categorias">
+            <option value="Metales"></option>
+            <option value="Plásticos"></option>
+            <option value="Químicos"></option>
+            <option value="Electrónicos"></option>
+            <option value="Embalaje"></option>
+        </datalist>
+        <span asp-validation-for="Categoria" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="UnidadMedida" class="form-label"></label>
+        <input asp-for="UnidadMedida" class="form-control" />
+        <span asp-validation-for="UnidadMedida" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="StockMinimo" class="form-label"></label>
+        <input asp-for="StockMinimo" class="form-control" />
+        <span asp-validation-for="StockMinimo" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="StockActual" class="form-label"></label>
+        <input asp-for="StockActual" class="form-control" />
+        <span asp-validation-for="StockActual" class="text-danger"></span>
+    </div>
+</div>
