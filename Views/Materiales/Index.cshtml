@@ -1,41 +1,63 @@
 @model IEnumerable<DIS_Monher.Models.Material>
 
 @{
-    ViewData["Title"] = "Materiales";
+    ViewData["Title"] = "Catálogo de Materiales";
 }
 
-<h1>HU001: Registrar Materiales e Insumos</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <p class="text-uppercase text-muted small mb-1">Materiales / Insumos</p>
+        <h2 class="fw-bold mb-0">Catálogo de materiales</h2>
+        <small class="text-muted">Gestiona los materiales e insumos de tu inventario</small>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Registrar Nuevo Material</a>
-</p>
+<div class="card shadow-sm border-0 mb-3">
+    <div class="card-header bg-white py-3">
+        <h5 class="fw-bold mb-0">Materiales registrados</h5>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>UM</th>
+                    <th>Stock mín.</th>
+                    <th>Stock actual</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@item.Codigo</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Categoria</td>
+                        <td>@item.UnidadMedida</td>
+                        <td>@item.StockMinimo</td>
+                        <td>
+                            <span class="badge @(item.StockActual <= item.StockMinimo ? "bg-danger" : "bg-success")">
+                                @item.StockActual
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <!-- Botón Editar (Azul) -->
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <!-- Botón Eliminar (Rojo) -->
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Codigo)</th>
-            <th>@Html.DisplayNameFor(model => model.Nombre)</th>
-            <th>@Html.DisplayNameFor(model => model.Categoria)</th>
-            <th>@Html.DisplayNameFor(model => model.UnidadMedida)</th>
-            <th>@Html.DisplayNameFor(model => model.StockMinimo)</th>
-            <th>@Html.DisplayNameFor(model => model.StockActual)</th>
-            <th>@Html.DisplayNameFor(model => model.FechaIngreso)</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.Codigo)</td>
-                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
-                <td>@Html.DisplayFor(modelItem => item.Categoria)</td>
-                <td>@Html.DisplayFor(modelItem => item.UnidadMedida)</td>
-                <td>@Html.DisplayFor(modelItem => item.StockMinimo)</td>
-                <td style="color: @(item.StockActual <= item.StockMinimo ? "red" : "green"); font-weight: bold;">
-                    @Html.DisplayFor(modelItem => item.StockActual)
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.FechaIngreso)</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<a asp-action="Create" class="btn btn-primary">Registrar nuevo material</a>

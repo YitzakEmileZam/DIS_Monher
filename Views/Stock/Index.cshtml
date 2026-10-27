@@ -1,40 +1,123 @@
+
 @model IEnumerable<DIS_Monher.Models.Material>
 
 @{
-    ViewData["Title"] = "Stock";
+    ViewData["Title"] = "Control de Stock";
 }
 
-<h1>HU002: Actualizar Stock por Entradas y Salidas</h1>
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+        <h2 class="fw-bold">Control de Stock</h2>
+        <p class="text-muted mb-0">
+            Consulta las existencias y administra las entradas y salidas.
+        </p>
+    </div>
 
-<p>
-    <a asp-action="Entrada" class="btn btn-success">Registrar Entrada</a>
-    <a asp-action="Salida" class="btn btn-danger">Registrar Salida</a>
-</p>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+        Volver al inicio
+    </a>
+</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Codigo)</th>
-            <th>@Html.DisplayNameFor(model => model.Nombre)</th>
-            <th>@Html.DisplayNameFor(model => model.StockActual)</th>
-            <th>@Html.DisplayNameFor(model => model.StockMinimo)</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Mensaje"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                aria-label="Cerrar"></button>
+    </div>
+}
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <a asp-controller="Stock" asp-action="Entrada"
+           class="btn btn-success w-100 py-3">
+            <i class="bi bi-box-arrow-in-down me-2"></i>
+            Registrar entrada
+        </a>
+    </div>
+    <div class="col-md-6">
+        <a asp-controller="Stock" asp-action="Salida"
+           class="btn btn-danger w-100 py-3">
+            <i class="bi bi-box-arrow-up me-2"></i>
+            Registrar salida
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-dark text-white py-3">
+        <h5 class="mb-0">Existencias de materiales</h5>
+    </div>
+
+    <div class="card-body">
+        @if (Model == null || !Model.Any())
         {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.Codigo)</td>
-                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
-                <td style="color: @(item.StockActual <= item.StockMinimo ? "red" : "green"); font-weight: bold;">
-                    @Html.DisplayFor(modelItem => item.StockActual)
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.StockMinimo)</td>
-                <td>
-                    <a asp-action="Historical" asp-route-id="@item.Id" class="btn btn-info btn-sm">Historial</a>
-                </td>
-            </tr>
+            <div class="alert alert-info mb-0">
+                No hay materiales registrados. Registra primero un material
+                para que aparezca en esta tabla.
+            </div>
         }
-    </tbody>
-</table>
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Material</th>
+                            <th>Stock actual</th>
+                            <th>Stock mínimo</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var material in Model)
+                        {
+                            var stockBajo = material.StockActual <= material.StockMinimo;
+
+                            <tr>
+                                <td class="fw-semibold">@material.Nombre</td>
+                                <td>@material.StockActual</td>
+                                <td>@material.StockMinimo</td>
+                                <td>
+                                    @if (stockBajo)
+                                    {
+                                        <span class="badge bg-danger">Stock bajo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Normal</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center flex-wrap gap-2">
+                                        <a asp-controller="Stock"
+                                           asp-action="Entrada"
+                                           asp-route-materialId="@material.Id"
+                                           class="btn btn-sm btn-outline-success">
+                                            Entrada
+                                        </a>
+
+                                        <a asp-controller="Stock"
+                                           asp-action="Salida"
+                                           asp-route-materialId="@material.Id"
+                                           class="btn btn-sm btn-outline-danger">
+                                            Salida
+                                        </a>
+
+                                        <a asp-controller="Stock"
+                                           asp-action="Historial"
+                                           asp-route-id="@material.Id"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Historial
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

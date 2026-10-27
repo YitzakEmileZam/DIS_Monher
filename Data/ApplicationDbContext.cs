@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿
+using DIS_Monher.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DIS_Monher.Data;
@@ -9,4 +11,7 @@ public class ApplicationDbContext : IdentityDbContext
         : base(options)
     {
     }
+
+    public DbSet<Material> Materiales { get; set; }
+    public DbSet<MovimientoStock> MovimientosStock { get; set; }
 }

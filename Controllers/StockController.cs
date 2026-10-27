@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DIS_Monher.Data;
@@ -14,106 +15,200 @@ namespace DIS_Monher.Controllers
             _context = context;
         }
 
-        // GET: Stock
+        // GET: /Stock
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var materiales = await _context.Materiales.ToListAsync();
-            return View(materiales);
+            var materiales = await _context.Materiales
+                .AsNoTracking()
+                .OrderBy(m => m.Nombre)
+                .ToListAsync();
+
+            return View("Index", materiales);
         }
 
-        // GET: Stock/Entrada
-        public async Task<IActionResult> Entrada()
+        // GET: /Stock/Entrada
+        [HttpGet]
+        public async Task<IActionResult> Entrada(int? materialId)
         {
-            ViewBag.Materiales = await _context.Materiales.ToListAsync();
-            return View();
-        }
+            await CargarMateriales();
 
-        // POST: Stock/Entrada
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Entrada([Bind("MaterialId,Cantidad,Motivo,Responsable")] MovimientoStock movimiento)
-        {
-            var material = await _context.Materiales.FindAsync(movimiento.MaterialId);
-            if (material == null)
+            var movimiento = new MovimientoStock();
+
+            if (materialId.HasValue)
             {
-                return NotFound();
+                var existe = await _context.Materiales
+                    .AnyAsync(m => m.Id == materialId.Value);
+
+                if (!existe)
+                {
+                    return NotFound("El material seleccionado no existe.");
+                }
+
+                movimiento.MaterialId = materialId.Value;
             }
 
-            if (ModelState.IsValid)
-            {
-                // Actualizar stock automáticamente
-                material.StockActual += movimiento.Cantidad;
-
-                movimiento.Tipo = "entrada";
-                movimiento.Fecha = DateTime.Now;
-
-                _context.MovimientosStock.Add(movimiento);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            ViewBag.Materiales = await _context.Materiales.ToListAsync();
             return View(movimiento);
         }
 
-        // GET: Stock/Salida
-        public async Task<IActionResult> Salida()
-        {
-            ViewBag.Materiales = await _context.Materiales.ToListAsync();
-            return View();
-        }
-
-        // POST: Stock/Salida
+        // POST: /Stock/Entrada
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Salida([Bind("MaterialId,Cantidad,Motivo,Responsable")] MovimientoStock movimiento)
+        public async Task<IActionResult> Entrada(
+            [Bind("MaterialId,Cantidad,Motivo,Responsable")]
+            MovimientoStock movimiento)
         {
-            var material = await _context.Materiales.FindAsync(movimiento.MaterialId);
-            if (material == null)
+            movimiento.Tipo = "entrada";
+            movimiento.Fecha = DateTime.Now;
+
+            if (movimiento.Cantidad <= 0)
             {
-                return NotFound();
+                ModelState.AddModelError(
+                    nameof(movimiento.Cantidad),
+                    "La cantidad debe ser mayor que cero.");
             }
 
-            // Validar stock suficiente
-            if (material.StockActual < movimiento.Cantidad)
+            var material = await _context.Materiales
+                .FirstOrDefaultAsync(m => m.Id == movimiento.MaterialId);
+
+            if (material == null)
             {
-                ModelState.AddModelError("Cantidad", $"Stock insuficiente. Stock actual: {material.StockActual}");
-                ViewBag.Materiales = await _context.Materiales.ToListAsync();
+                ModelState.AddModelError(
+                    nameof(movimiento.MaterialId),
+                    "Selecciona un material válido.");
+            }
+
+            ModelState.Remove(nameof(movimiento.Tipo));
+            ModelState.Remove(nameof(movimiento.Material));
+
+            if (!ModelState.IsValid)
+            {
+                await CargarMateriales();
                 return View(movimiento);
             }
 
-            if (ModelState.IsValid)
+            material!.StockActual += movimiento.Cantidad;
+
+            _context.MovimientosStock.Add(movimiento);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Mensaje"] = "Entrada registrada correctamente.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: /Stock/Salida
+        [HttpGet]
+        public async Task<IActionResult> Salida(int? materialId)
+        {
+            await CargarMateriales();
+
+            var movimiento = new MovimientoStock();
+
+            if (materialId.HasValue)
             {
-                // Actualizar stock automáticamente
-                material.StockActual -= movimiento.Cantidad;
+                var existe = await _context.Materiales
+                    .AnyAsync(m => m.Id == materialId.Value);
 
-                movimiento.Tipo = "salida";
-                movimiento.Fecha = DateTime.Now;
+                if (!existe)
+                {
+                    return NotFound("El material seleccionado no existe.");
+                }
 
-                _context.MovimientosStock.Add(movimiento);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                movimiento.MaterialId = materialId.Value;
             }
 
-            ViewBag.Materiales = await _context.Materiales.ToListAsync();
             return View(movimiento);
         }
 
-        // GET: Stock/Historial/5
+        // POST: /Stock/Salida
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Salida(
+            [Bind("MaterialId,Cantidad,Motivo,Responsable")]
+            MovimientoStock movimiento)
+        {
+            movimiento.Tipo = "salida";
+            movimiento.Fecha = DateTime.Now;
+
+            if (movimiento.Cantidad <= 0)
+            {
+                ModelState.AddModelError(
+                    nameof(movimiento.Cantidad),
+                    "La cantidad debe ser mayor que cero.");
+            }
+
+            var material = await _context.Materiales
+                .FirstOrDefaultAsync(m => m.Id == movimiento.MaterialId);
+
+            if (material == null)
+            {
+                ModelState.AddModelError(
+                    nameof(movimiento.MaterialId),
+                    "Selecciona un material válido.");
+            }
+            else if (movimiento.Cantidad > 0 &&
+                     material.StockActual < movimiento.Cantidad)
+            {
+                ModelState.AddModelError(
+                    nameof(movimiento.Cantidad),
+                    $"Stock insuficiente. Stock actual: {material.StockActual}.");
+            }
+
+            ModelState.Remove(nameof(movimiento.Tipo));
+            ModelState.Remove(nameof(movimiento.Material));
+
+            if (!ModelState.IsValid)
+            {
+                await CargarMateriales();
+                return View(movimiento);
+            }
+
+            material!.StockActual -= movimiento.Cantidad;
+
+            _context.MovimientosStock.Add(movimiento);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Mensaje"] = "Salida registrada correctamente.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: /Stock/Historial?id=5
+        [HttpGet]
         public async Task<IActionResult> Historial(int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
+            }
+
+            var materialExiste = await _context.Materiales
+                .AnyAsync(m => m.Id == id.Value);
+
+            if (!materialExiste)
+            {
+                return NotFound("El material seleccionado no existe.");
             }
 
             var movimientos = await _context.MovimientosStock
-                .Where(m => m.MaterialId == id)
+                .AsNoTracking()
                 .Include(m => m.Material)
+                .Where(m => m.MaterialId == id.Value)
                 .OrderByDescending(m => m.Fecha)
                 .ToListAsync();
 
-            return View(movimientos);
+            return View("Historial", movimientos);
+        }
+
+        private async Task CargarMateriales()
+        {
+            ViewBag.Materiales = await _context.Materiales
+                .AsNoTracking()
+                .OrderBy(m => m.Nombre)
+                .ToListAsync();
         }
     }
 }

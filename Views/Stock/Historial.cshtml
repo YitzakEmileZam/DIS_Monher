@@ -1,37 +1,123 @@
+
 @model IEnumerable<DIS_Monher.Models.MovimientoStock>
 
 @{
-    ViewData["Title"] = "Historial de Movimientos";
+    ViewData["Title"] = "Historial de movimientos";
+    var movimientos = Model?.ToList()
+        ?? new List<DIS_Monher.Models.MovimientoStock>();
+
+    var material = movimientos.FirstOrDefault()?.Material;
 }
 
-<h1>Historial de Movimientos</h1>
+<div class="stock-page">
+    <div class="page-heading">
+        <span class="section-eyebrow">INVENTARIO / HISTORIAL</span>
+        <h1>Historial de movimientos</h1>
+        <p>
+            Consulta las entradas y salidas registradas para un material.
+        </p>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Tipo)</th>
-            <th>@Html.DisplayNameFor(model => model.Cantidad)</th>
-            <th>@Html.DisplayNameFor(model => model.Motivo)</th>
-            <th>@Html.DisplayNameFor(model => model.Responsable)</th>
-            <th>@Html.DisplayNameFor(model => model.Fecha)</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    <span class="badge @(item.Tipo == "entrada" ? "bg-success" : "bg-danger")">
-                        @Html.DisplayFor(modelItem => item.Tipo)
-                    </span>
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
-                <td>@Html.DisplayFor(modelItem => item.Motivo)</td>
-                <td>@Html.DisplayFor(modelItem => item.Responsable)</td>
-                <td>@Html.DisplayFor(modelItem => item.Fecha)</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    @if (material != null)
+    {
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="mb-1">@material.Nombre</h5>
+                <p class="mb-0 text-muted">
+                    Código: @material.Codigo
+                    <span class="mx-2">|</span>
+                    Stock actual: <strong>@material.StockActual</strong>
+                </p>
+            </div>
+        </div>
+    }
 
-<a asp-action="Index" class="btn btn-secondary">Volver</a>
+    <div class="card shadow-sm">
+        <div class="card-header d-flex justify-content-between
+                    align-items-center flex-wrap gap-2">
+            <h4 class="mb-0">Movimientos registrados</h4>
+            <span class="badge bg-secondary">
+                @movimientos.Count movimientos
+            </span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover
+                          align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>FECHA</th>
+                        <th>TIPO</th>
+                        <th>MATERIAL</th>
+                        <th>CANTIDAD</th>
+                        <th>MOTIVO</th>
+                        <th>RESPONSABLE</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (movimientos.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-5">
+                                <strong>No hay movimientos registrados.</strong>
+                                <p class="text-muted mb-0 mt-2">
+                                    Cuando registres una entrada o salida,
+                                    aparecerá aquí.
+                                </p>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var movimiento in movimientos)
+                        {
+                            var esEntrada = string.Equals(
+                                movimiento.Tipo,
+                                "entrada",
+                                StringComparison.OrdinalIgnoreCase);
+
+                            <tr>
+                                <td>
+                                    @movimiento.Fecha.ToString(
+                                        "dd/MM/yyyy HH:mm")
+                                </td>
+
+                                <td>
+                                    @if (esEntrada)
+                                    {
+                                        <span class="badge bg-success">
+                                            Entrada
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">
+                                            Salida
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @(movimiento.Material?.Nombre ?? "—")
+                                </td>
+
+                                <td>@movimiento.Cantidad</td>
+                                <td>@movimiento.Motivo</td>
+                                <td>@movimiento.Responsable</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer">
+            <a asp-controller="Stock"
+               asp-action="Index"
+               class="btn btn-outline-primary">
+                Volver al control de stock
+            </a>
+        </div>
+    </div>
+</div>
